@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Counter</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Prata&display=swap"
+    />
+    <link rel="stylesheet" href="counter.css" />
+  </head>
+  <body>
+    <div id="app" class="sayac">
+      <h1>Counter</h1>
+      <div class="sayac-container">
+        <p id="sayacDeger">{{ sayac }}</p>
+        <img src="saat.png" alt="Saat İkonu" id="saatIkonu" />
+      </div>
+      <div class="dugme-container">
+        <button @click="baslat" id="baslat">Start</button>
+        <button @click="durdur" id="durdur">Stop</button>
+        <button @click="devamEt" id="devamEt" :disabled="!devamEdebilir">
+          Continue
+        </button>
+        <button @click="basaSar" id="basaSar">Reset</button>
+        <button @click="hizlan" id="hizlan">Speed Up</button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          sayac: 0,
+          intervalID: null,
+          devamEdebilir: false,
+        },
+        methods: {
+          baslat: function () {
+            if (!this.intervalID) {
+              this.intervalID = setInterval(() => {
+                this.sayac++;
+              }, 1000);
+              this.devamEdebilir = false;
+            }
+          },
+          durdur: function () {
+            if (this.intervalID) {
+              clearInterval(this.intervalID);
+              this.intervalID = null;
+              this.devamEdebilir = true;
+            }
+          },
+          devamEt: function () {
+            this.baslat();
+          },
+          basaSar: function () {
+            this.sayac = 0;
+            this.durdur();
+          },
+          hizlan: function () {
+            if (this.intervalID) {
+              clearInterval(this.intervalID);
+              this.intervalID = setInterval(() => {
+                this.sayac++;
+              }, 500);
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
